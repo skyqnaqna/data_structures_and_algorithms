@@ -82,3 +82,68 @@ extension QueueLinkedList: CustomStringConvertible {
 
 // Ring buffer implementation
 
+public struct QueueRingBuffer<T>: Queue {
+  private var ringBuffer: RingBuffer<T>
+  
+  public init (count: Int) {
+    ringBuffer = RingBuffer<T>(count: count)
+  }
+  
+  public var isEmpty: Bool {
+    return ringBuffer.isEmpty
+  }
+  
+  public var peek: T? {
+    return ringBuffer.first
+  }
+  
+  public mutating func enqueue(_ element: T) -> Bool {
+    return ringBuffer.write(element)
+  }
+  
+  public mutating func dequeue() -> T? {
+    return isEmpty ? nil : ringBuffer.read()
+  }
+}
+
+extension QueueRingBuffer: CustomStringConvertible {
+  public var description: String {
+    return ringBuffer.description
+  }
+}
+
+// Double stack implementation
+
+public struct QueueStack<T>: Queue {
+  private var leftStack: [T] = []
+  private var rightStack: [T] = []
+  public init () {}
+  
+  public var isEmpty: Bool {
+    return leftStack.isEmpty && rightStack.isEmpty
+  }
+  
+  public var peek: T? {
+    return !leftStack.isEmpty ? leftStack.last : rightStack.first
+  }
+  
+  public mutating func enqueue(_ element: T) -> Bool {
+    rightStack.append(element)
+    return true
+  }
+  
+  public mutating func dequeue() -> T? {
+    if leftStack.isEmpty {
+      leftStack = rightStack.reversed()
+      rightStack.removeAll()
+    }
+    return leftStack.popLast()
+  }
+}
+
+extension QueueStack: CustomStringConvertible {
+  public var description: String {
+    let printList = leftStack + rightStack.reversed()
+    return printList.description
+  }
+}
