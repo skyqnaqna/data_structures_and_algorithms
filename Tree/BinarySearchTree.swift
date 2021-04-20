@@ -81,9 +81,10 @@ extension BinarySearchTree {
       if node.rightChild == nil {
         return node.leftChild
       }
-      
+     
+      // 자식이 둘다 있을 때
       node.value = node.rightChild!.min.value
-      node.rightChild = remove(node: node.rightChild, value: value)
+      node.rightChild = remove(node: node.rightChild, value: node.value)
       
     } else if value < node.value {
       node.leftChild = remove(node: node.leftChild, value: value)
