@@ -53,7 +53,7 @@ struct PriorityQueue<T> {
       if left < count && sort(array[left], array[candidate]) {
         candidate = left
       }
-      if right < count && sort(array[left], array[candidate]) {
+      if right < count && sort(array[right], array[candidate]) {
         candidate = right
       }
       if candidate == parent {
